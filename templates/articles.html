@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+
+
+{% block content %}
+    {% if articles %}
+    {% for article in articles %}
+    <hr>
+         <div class="container mt-5">
+             <div class="row">
+                 <div class="col-lg-8">
+                     <!-- Post content-->
+                     <article>
+                         <!-- Post header-->
+                         <header class="mb-4">
+                             <!-- Post title-->
+                             <h1 class="fw-bolder mb-1"><a class="text-decoration-none text-dark" href="{% url 'detail' article.id %}">{{article.title}}</a></h1>
+                             <!-- Post meta content-->
+                             <div class="text-muted fst-italic mb-2">Posted on {{article.created_date}} by {{article.author.username}}</div>
+                             <!-- Post categories-->
+                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
+                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                         </header>
+                         {% if article.articleImage%}
+                             <!-- Preview image figure-->
+                         <figure class="mb-4"><img class="img-fluid rounded" src="{{article.articleImage.url}}" alt="..." /></figure>
+                         {% else %}
+                         {% endif %}
+                         <!-- Post content-->
+                         
+                         <section class="mb-5">
+                             <p class="fs-5 mb-4">{{article.content|safe|truncatewords:50}}...</p>
+                             <br><br>
+                             <div><a class="btn btn-danger d-flex float-end mb-5" href="{% url 'detail' article.id %}">Continue Reading</a></div>
+                             
+                         </section>
+                     </article>
+                 </div>
+             </div>
+         </div>
+    {% endfor %} 
+    {% else %}
+         <div class="bg-warning text-center">
+            <p>There is no article like named "{{keyword}}"</p>
+         </div>
+    {% endif %}
+    <!-- Page content-->
+   
+
+{% endblock content %}

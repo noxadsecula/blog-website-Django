@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+
+
+{% block content %}
+    <!-- Page content-->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1">{{article.title}}</h1>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">Posted on {{article.created_date}} by {{article.author.username}}</div>
+                            <!-- Post categories-->
+                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
+                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                        </header>
+                        {% if article.articleImage%}
+                            <!-- Preview image figure-->
+                        <figure class="mb-4"><img class="img-fluid rounded" src="{{article.articleImage.url}}" alt="..." /></figure>
+                        {% else %}
+                        {% endif %}
+                        <!-- Post content-->
+                        
+                        <section class="mb-5">
+                            <p class="fs-5 mb-4">{{article.content|safe}}</p>
+                        </section>
+                    </article>
+                    <section class="mb-5">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <!-- Comment form-->
+                                <form class="mb-4" action="{% url 'comment' article.id %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon1">@</span>
+                                        </div>
+                                        <input name="commentAuthor" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                      </div>
+                                    <textarea name="commentContent" class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                                    <button class="btn btn-success mt-2" type="submit">Post Comment</button>
+                                </form>
+                                
+                                {% if comments %}
+                                {% for comment in comments  %}
+                                    <div class="d-flex mb-4">
+                                    <!-- Parent comment-->
+                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">{{comment.commentAuthor}}</div>
+                                        <p>{{comment.commentDate}}</p>
+                                        <p>{{comment.commentContent}}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                                {% else %}
+                                    <div class="bg-warning text-center">
+                                        <p>There is no comment yet.</p>
+                                    </div>  
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}
